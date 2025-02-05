@@ -50,8 +50,7 @@ public class Produto{
     public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
-    public void setDescricao(String descricao) throws InvalidNameException{
-        verificador.verificarNome(descricao);
+    public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
     public void setNome(String nome) throws InvalidNameException{

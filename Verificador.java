@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter;
 
 //CLASSE CRIADA PARA FACILITAR E PREVENIR MUITA REPETICAO DE CODIGO DESNESCESSARIA!!!!
 public class Verificador {
+        int quantidade;
         public void verificarDataValidade(String dataDeValidade) throws ProdutoVencidoException{
         //CONSTANTE PARA DECLARAR FORMATACAO!!
         DateTimeFormatter FORMATO = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -18,6 +19,8 @@ public class Verificador {
         }
     }
 
+
+    //classes para checagem autoexplicativas
     public void verificarNome(String nome) throws InvalidNameException{
             if(nome.isBlank()){
                 throw new InvalidNameException("Nao pode estar vazio!");
@@ -34,11 +37,12 @@ public class Verificador {
             if(quantidade < 0){
                 throw new InvalidQuantidadeException("Quantidade nao pode ser negativa!");
             }
+            this.quantidade = quantidade;
     }
 
     public void verificarLimiteDeEstoque(int limiteEstoque) throws LimiteEstoqueException{
-            if(limiteEstoque < 0){
-                throw new LimiteEstoqueException("Limite de estoque nao pode ser negativo!");
+            if(limiteEstoque < 0 || limiteEstoque < quantidade){
+                throw new LimiteEstoqueException("Limite de estoque invalido!");
             }
     }
 

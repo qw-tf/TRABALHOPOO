@@ -1,3 +1,4 @@
+package Excessoes;
 public class InvalidPrecoException extends Exception{
     public InvalidPrecoException(){
     }

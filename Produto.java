@@ -1,3 +1,7 @@
+import Excessoes.InvalidPrecoException;
+import Excessoes.InvalidQuantidadeException;
+import Excessoes.LimiteEstoqueException;
+
 public class Produto{
     //atributos pedidos no arquivo,
     //escolhemos adicionar código do produto e limite maximo de estoque.
@@ -52,8 +56,7 @@ public class Produto{
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-    public void setNome(String nome) throws InvalidNameException{
-        verificador.verificarNome(nome);
+    public void setNome(String nome){
         this.nome = nome;
     }
     public void setPreco(double preco) throws InvalidPrecoException{
@@ -61,12 +64,15 @@ public class Produto{
         this.preco = preco;
     }
     public void setQuantidade(int quantidade) throws InvalidQuantidadeException{
-        verificador.verificarQuantidade(quantidade);
+        verificador.verificarQuantidade(quantidade, limiteEstoque);
         this.quantidade = quantidade;
     }
     public void setLimiteDeEstoque(int limiteEstoque) throws LimiteEstoqueException{
-        verificador.verificarLimiteDeEstoque(limiteEstoque);
+        verificador.verificarLimiteDeEstoque(limiteEstoque, quantidade);
         this.limiteEstoque = limiteEstoque;
+    }
+    public static void setQuantidadeDeProdutosTotal(int quantidadeDeProdutos){
+        quantidadeDeProdutosTotal = quantidadeDeProdutos;
     }
 
     //para poder fazer mudanças na quantidade total de produtos

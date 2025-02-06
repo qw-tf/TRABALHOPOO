@@ -1,11 +1,13 @@
 import java.time.format.DateTimeParseException;
+
+import Excessoes.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 //CLASSE CRIADA PARA FACILITAR E PREVENIR MUITA REPETICAO DE CODIGO DESNESCESSARIA!!!!
 public class Verificador {
     
-        int quantidade;
         public void verificarDataValidade(String dataDeValidade) throws ProdutoVencidoException{
         //CONSTANTE PARA DECLARAR FORMATACAO!!
         DateTimeFormatter FORMATO = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -20,6 +22,11 @@ public class Verificador {
         }
     }
 
+    public void verificarCodigo(int codigo) throws InvalidCodigoException{
+        if(codigo < 1000 && codigo > 9999){ // checa se o codigo é valido (possue 4 digitos)
+            throw new InvalidCodigoException("Digite um codigo valido!");
+        }
+    }
 
     //classes para checagem autoexplicativas
     public void verificarNome(String nome) throws InvalidNameException{
@@ -34,14 +41,13 @@ public class Verificador {
             }
     }
 
-    public void verificarQuantidade(int quantidade) throws InvalidQuantidadeException{
-            if(quantidade < 0){
-                throw new InvalidQuantidadeException("Quantidade nao pode ser negativa!");
+    public void verificarQuantidade(int quantidade, int limiteEstoque) throws InvalidQuantidadeException{
+            if(quantidade < 0 || quantidade > limiteEstoque){
+                throw new InvalidQuantidadeException("Quantidade Invalida!");
             }
-            this.quantidade = quantidade;
     }
 
-    public void verificarLimiteDeEstoque(int limiteEstoque) throws LimiteEstoqueException{
+    public void verificarLimiteDeEstoque(int limiteEstoque, int quantidade) throws LimiteEstoqueException{
             if(limiteEstoque < 0 || limiteEstoque < quantidade){
                 throw new LimiteEstoqueException("Limite de estoque invalido!");
             }

@@ -41,7 +41,8 @@ public class ManipularArquivo {
                 double preco = Double.parseDouble(dados[3]);
                 String descricao = dados[4];
                 int limiteEstoque = Integer.parseInt(dados[5]);
-                String dataDeValidade = dados.length > 6 ? dados[6] : null;
+                int quantidadeDeProdutosTotal =Integer.parseInt(dados[6]);
+                String dataDeValidade = dados.length > 7 ? dados[7] : null;
                 //checa se foram apenas 5 variaveis, se sim, setta data de validade como null, indicando prod nao perecivel
     
                 Produto produto;
@@ -52,6 +53,7 @@ public class ManipularArquivo {
                 }
                 produto.setCodigo(codigo);
                 produto.setDescricao(descricao);
+                Produto.setQuantidadeDeProdutosTotal(quantidadeDeProdutosTotal);
                 controlador.aumentarLista(produto);//adiciona o produto carregado do arquivo a lista do controlador para ser modificado
             }
         }catch (IOException e) {
@@ -59,10 +61,11 @@ public class ManipularArquivo {
         }
     }
 
-    public void salvarArquivo(List<Produto> produtos) {
+    public void salvarArquivo() {
+        List<Produto> produtos = controlador.getProdutos();
         try (BufferedWriter pera = new BufferedWriter(new FileWriter(nomeArquivo, false))) {
             // escreve o cabeçalho do CSV
-            pera.write("Código,Nome,Quantidade,Preço,Descrição,Limite de Estoque,Data de Validade");
+            pera.write("Código,Nome,Quantidade,Preço,Descrição,Limite de Estoque,Quantidade de Produtos Total,Data de Validade");
             pera.newLine();
     
             // escreve os dados de cada produto
@@ -72,7 +75,9 @@ public class ManipularArquivo {
                                produto.getQuantidade() + "," +
                                produto.getPreco() + "," +
                                produto.getDescricao() + "," +
-                               produto.getLimiteEstoque();
+                               produto.getLimiteEstoque() + "," +
+                               Produto.getQuantidadeDeProdutosTotal();
+
     
                 // se o produto for perecível, adiciona a data de validade
                 if (produto instanceof ProdutoPerecivel) {

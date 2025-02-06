@@ -13,7 +13,6 @@ public class Produto{
 
     //construtor
     public Produto(String nome, int quantidade, double preco, int limiteEstoque){
-      
         this.nome = nome;
         this.preco = preco;
         this.quantidade = quantidade;

@@ -80,6 +80,7 @@ public class ControladorDeEstoque {
                     if(descricaoAdd){
                         prod1.setDescricao(descricao);
                     }
+                    
                     Produto.aumentarProdutosTotal();
                     return prod1;
                 // catchs usados para lançar a mensagem de erro e reiniciar o while

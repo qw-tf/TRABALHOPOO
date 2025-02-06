@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter;
 
 //CLASSE CRIADA PARA FACILITAR E PREVENIR MUITA REPETICAO DE CODIGO DESNESCESSARIA!!!!
 public class Verificador {
+    
         int quantidade;
         public void verificarDataValidade(String dataDeValidade) throws ProdutoVencidoException{
         //CONSTANTE PARA DECLARAR FORMATACAO!!

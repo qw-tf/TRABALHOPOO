@@ -54,8 +54,6 @@ public class ManipularArquivo {
                 produto.setDescricao(descricao);
                 controlador.aumentarLista(produto);//adiciona o produto carregado do arquivo a lista do controlador para ser modificado
             }
-        }catch(InvalidNameException e){
-            System.out.println(e.getMessage());
         }catch (IOException e) {
             System.out.println("Erro ao ler arquivo: " + e.getMessage());
         }

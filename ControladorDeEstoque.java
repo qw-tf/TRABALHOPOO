@@ -6,12 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-import Excessoes.InvalidCodigoException;
-import Excessoes.InvalidNameException;
-import Excessoes.InvalidPrecoException;
-import Excessoes.InvalidQuantidadeException;
-import Excessoes.LimiteEstoqueException;
-import Excessoes.ProdutoVencidoException;
+import Excessoes.*;
 
 public class ControladorDeEstoque {
     // verificador para verificar respostas

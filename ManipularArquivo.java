@@ -27,7 +27,8 @@ public class ManipularArquivo {
     public void carregarProdutos() { // le o arquivo csv ja existente e carrega o que tem nele para as variaveis do programa
         try (BufferedReader maca = new BufferedReader(new FileReader(nomeArquivo))) {
             String linha;
-            boolean cabecalho = true;   
+            boolean cabecalho = true;  
+            int maiorCodigo = 1000; 
             while ((linha = maca.readLine()) != null) {
                 if (cabecalho) {
                     cabecalho = false;
@@ -36,13 +37,15 @@ public class ManipularArquivo {
                 //apos verificar a linha, atribue o conteudo da linha (que estao separadas por ",") às variaveis
                 String[] dados = linha.split(","); 
                 int codigo = Integer.parseInt(dados[0]);
+                if(codigo > maiorCodigo){
+                    maiorCodigo = codigo;
+                }
                 String nome = dados[1];
                 int quantidade = Integer.parseInt(dados[2]);
                 double preco = Double.parseDouble(dados[3]);
-                String descricao = dados[4];
+                String descricao = dados[4].isEmpty() ? null : dados[4];;
                 int limiteEstoque = Integer.parseInt(dados[5]);
-                int quantidadeDeProdutosTotal =Integer.parseInt(dados[6]);
-                String dataDeValidade = dados.length > 7 ? dados[7] : null;
+                String dataDeValidade = dados.length > 6 ? dados[6] : null;
                 //checa se foram apenas 5 variaveis, se sim, setta data de validade como null, indicando prod nao perecivel
     
                 Produto produto;
@@ -53,7 +56,7 @@ public class ManipularArquivo {
                 }
                 produto.setCodigo(codigo);
                 produto.setDescricao(descricao);
-                Produto.setQuantidadeDeProdutosTotal(quantidadeDeProdutosTotal);
+                Produto.setProximoCodigo(maiorCodigo + 1);
                 controlador.aumentarLista(produto);//adiciona o produto carregado do arquivo a lista do controlador para ser modificado
             }
         }catch (IOException e) {
@@ -65,18 +68,18 @@ public class ManipularArquivo {
         List<Produto> produtos = controlador.getProdutos();
         try (BufferedWriter pera = new BufferedWriter(new FileWriter(nomeArquivo, false))) {
             // escreve o cabeçalho do CSV
-            pera.write("Código,Nome,Quantidade,Preço,Descrição,Limite de Estoque,Quantidade de Produtos Total,Data de Validade");
+            pera.write("Código,Nome,Quantidade,Preço,Descrição,Limite de Estoque,Data de Validade");
             pera.newLine();
     
             // escreve os dados de cada produto
             for (Produto produto : produtos) {
+                String descricao = produto.getDescricao() != null ? produto.getDescricao() : ""; 
                 String linha = produto.getCodigo() + "," +
                                produto.getNome() + "," +
                                produto.getQuantidade() + "," +
                                produto.getPreco() + "," +
-                               produto.getDescricao() + "," +
-                               produto.getLimiteEstoque() + "," +
-                               Produto.getQuantidadeDeProdutosTotal();
+                               descricao + "," +
+                               produto.getLimiteEstoque();
 
     
                 // se o produto for perecível, adiciona a data de validade

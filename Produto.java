@@ -9,8 +9,9 @@ public class Produto{
     private int quantidade, codigo, limiteEstoque;
     private double preco;
 
-    //variavel static para contar a quantidade total de produtos, 
-    private static int quantidadeDeProdutosTotal = 0;
+    //variavel static para contar a quantidade total de produtos, e a
+    //variavel para ajudar a carregar os codigos dos produtos corretamente
+    private static int proximoCodigo = 1000;
 
     //instancia novo verificador para checar as variaveis
     Verificador verificador = new Verificador();
@@ -21,7 +22,8 @@ public class Produto{
         this.preco = preco;
         this.quantidade = quantidade;
         this.limiteEstoque = limiteEstoque;
-        codigo = quantidadeDeProdutosTotal + 1000;
+
+        codigo = proximoCodigo++; //automaticamente da um novo codigo a um produto
     }
 
     //gets e sets dos atributos
@@ -43,11 +45,11 @@ public class Produto{
     public int getLimiteDeEstoque(){
         return limiteEstoque;
     }
-    public static int getQuantidadeDeProdutosTotal() {
-        return quantidadeDeProdutosTotal;
-    }
     public int getLimiteEstoque() {
         return limiteEstoque;
+    }
+    public int getProximoCodigo(){
+        return proximoCodigo;
     }
 
     public void setCodigo(int codigo) {
@@ -71,15 +73,7 @@ public class Produto{
         verificador.verificarLimiteDeEstoque(limiteEstoque, quantidade);
         this.limiteEstoque = limiteEstoque;
     }
-    public static void setQuantidadeDeProdutosTotal(int quantidadeDeProdutos){
-        quantidadeDeProdutosTotal = quantidadeDeProdutos;
-    }
-
-    //para poder fazer mudanças na quantidade total de produtos
-    public static void aumentarProdutosTotal(){
-        quantidadeDeProdutosTotal++;
-    }
-    public static void diminuirProdutosTotal(){
-        quantidadeDeProdutosTotal--;
+    public static void setProximoCodigo(int codigo) {
+        proximoCodigo = codigo;
     }
 }

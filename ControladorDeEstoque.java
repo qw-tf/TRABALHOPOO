@@ -33,7 +33,7 @@ public class ControladorDeEstoque {
         // algo invalido
         while (true) {
             try {
-                String nome, descricao = null, dataDeValidade;
+                String nome, descricao = "", dataDeValidade;
                 int quantidade, limiteEstoque;
                 double preco;
                 boolean descricaoAdd; // booleano para checar se a descricao foi adicionada
@@ -84,8 +84,6 @@ public class ControladorDeEstoque {
                             // "descricaoAdd" for verdadeira
                             prod1.setDescricao(descricao);
                         }
-                        Produto.aumentarProdutosTotal(); // aumenta o total de produtos para atualizar coisas como o
-                                                         // codigo do produto
                         produtos.add(prod1);
                         return prod1;
                     }
@@ -95,7 +93,6 @@ public class ControladorDeEstoque {
                         prod1.setDescricao(descricao);
                     }
 
-                    Produto.aumentarProdutosTotal();
                     produtos.add(prod1);
                     return prod1;
                 }
@@ -143,6 +140,7 @@ public class ControladorDeEstoque {
             scanner.nextLine();
             if (codigo == 0) {
                 System.out.println("Saindo...");
+                return;
             } else {
                 verificador.verificarCodigo(codigo);
 
@@ -151,22 +149,57 @@ public class ControladorDeEstoque {
                 while (iterator.hasNext()) {
                     Produto produto = iterator.next();
                     if (produto.getCodigo() == codigo) {
+                        System.out.println("Tem certeza que quer excluir (" + produto.getNome() +") (s/n)?");
+                        String opcao = scanner.nextLine();
+                        verificador.verificarResposta(opcao);
+                        if(opcao.equals("n")){
+                            System.out.println("Saindo...");
+                            return;
+                        }
                         iterator.remove(); // Remove o produto da lista
-                        Produto.diminuirProdutosTotal();
                         System.out.println("Produto removido com sucesso!");
                         return;
                     }
                 }
             }
             System.out.println("Produto com esse codigo nao existe!");
-        } catch (InvalidCodigoException e) {
+        }catch (InvalidCodigoException e) {
             System.out.println(e.getMessage());
-        } catch (Exception e) {
+        }catch(IllegalArgumentException e){
+            System.out.println(e.getMessage());
+        }catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
     }
 
     public void aumentarLista(Produto produto) {
         produtos.add(produto); // metodo para aumentar a lista privada
+    }
+
+    public void imprimirProdutos(ControladorDeEstoque controlador){
+        for(Produto p : controlador.getProdutos()){
+            if(p instanceof ProdutoPerecivel){
+                ProdutoPerecivel perecivel = (ProdutoPerecivel) p;
+                System.out.print("Codigo: " + perecivel.getCodigo() + ", Nome: " + perecivel.getNome()
+                    + ", Limite de Estoque: " + perecivel.getLimiteDeEstoque()
+                    + ", Quantidade: " + perecivel.getQuantidade()
+                    + ", Preco: " + perecivel.getPreco()
+                    + ", Data de Validade: " + perecivel.getDataDeValidade());
+                    if(perecivel.getDescricao() != null && !perecivel.getDescricao().isBlank()){
+                        System.out.print(",Descricao: " + perecivel.getDescricao());
+                    }
+                    System.out.println();
+            }
+            else{
+                System.out.print("Codigo: " + p.getCodigo() + ", Nome: " + p.getNome()
+                    + ", Limite de Estoque: " + p.getLimiteDeEstoque()
+                    + ", Quantidade: " + p.getQuantidade()
+                    + ", Preco: " + p.getPreco());
+                    if(p.getDescricao() != null && !p.getDescricao().isBlank()){
+                        System.out.print(", Descricao: " + p.getDescricao());
+                    }
+                    System.out.println();
+            }
+        }
     }
 }
